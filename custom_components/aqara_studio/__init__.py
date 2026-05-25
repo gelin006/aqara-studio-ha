@@ -18,7 +18,7 @@ from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import ConfigEntryNotReady
 from homeassistant.helpers.aiohttp_client import async_create_clientsession
 
-from .const import CONF_HOST, CONF_PORT, CONF_TOKEN, DOMAIN, POLL_INTERVAL_FALLBACK
+from .const import CONF_HOST, CONF_PORT, CONF_TOKEN, DEFAULT_PORT, DOMAIN, POLL_INTERVAL_FALLBACK
 from .coordinator import AqaraStudioCoordinator
 from .websocket_client import AqaraStudioClient, AqaraStudioWebSocketError
 
@@ -41,7 +41,7 @@ async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Aqara Studio from a config entry."""
     host = entry.data[CONF_HOST]
     token = entry.data[CONF_TOKEN]
-    port = entry.data.get(CONF_PORT, 443)
+    port = entry.data.get(CONF_PORT, DEFAULT_PORT)
 
     session = async_create_clientsession(hass)
     client = AqaraStudioClient(host, token, port, session=session)

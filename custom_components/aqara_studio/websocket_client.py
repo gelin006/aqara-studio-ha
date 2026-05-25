@@ -108,17 +108,24 @@ class AqaraStudioClient:
         url = self._ws_url()
         _LOGGER.debug("Connecting: %s", url)
 
+        # NOTE: The token from Aqara Studio may already include a "Bearer " prefix.
+        # If it does, use it as-is per the documentation.
+        auth_header = (
+            self._token
+            if self._token.startswith("Bearer ")
+            else f"Bearer {self._token}"
+        )
+
         ws_session = self._session or aiohttp.ClientSession()
         self._ws = await ws_session.ws_connect(
             url,
-            headers={"Authorization": f"Bearer {self._token}"},
-            subprotocols=[WS_SUBPROTOCOL],
+            headers={"Authorization": auth_header},
             heartbeat=30.0,
         )
 
         # Aqara Studio authenticates via Bearer token in HTTP headers during the WebSocket upgrade.
         # No separate auth confirmation message is sent; the connection is ready once established.
-        _LOGGER.debug("WebSocket upgrade complete, subprotocol=%s", self._ws.protocol or "none")
+        _LOGGER.debug("WebSocket upgrade complete: %s:%s", self._host, self._port)
 
         self._connected = True
         _LOGGER.info("Connected to Aqara Studio at %s:%s", self._host, self._port)
