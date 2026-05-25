@@ -112,18 +112,13 @@ class AqaraStudioClient:
         self._ws = await ws_session.ws_connect(
             url,
             headers={"Authorization": f"Bearer {self._token}"},
+            subprotocols=[WS_SUBPROTOCOL],
             heartbeat=30.0,
         )
 
-        # Read auth confirmation (Aqara sends an initial auth OK)
-        try:
-            raw = await asyncio.wait_for(self._ws.receive(), timeout=10.0)
-            if raw.type in (aiohttp.WSMsgType.CLOSE, aiohttp.WSMsgType.CLOSED, aiohttp.WSMsgType.ERROR):
-                raise AqaraStudioWebSocketError("Connection closed during auth")
-            msg = raw.json() if isinstance(raw.data, (str, bytes)) else raw.data
-            _LOGGER.debug("Auth response: %s", msg)
-        except asyncio.TimeoutError:
-            raise AqaraStudioWebSocketError("Auth timeout") from None
+        # Aqara Studio authenticates via Bearer token in HTTP headers during the WebSocket upgrade.
+        # No separate auth confirmation message is sent; the connection is ready once established.
+        _LOGGER.debug("WebSocket upgrade complete, subprotocol=%s", self._ws.protocol or "none")
 
         self._connected = True
         _LOGGER.info("Connected to Aqara Studio at %s:%s", self._host, self._port)
