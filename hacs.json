@@ -6,6 +6,5 @@
   "country": ["CN"],
   "homeassistant": "2025.1.0",
   "iot_class": "Local Push",
-  "zip_release": true,
-  "filename": "aqara_studio.zip"
+  "zip_release": false
 }
