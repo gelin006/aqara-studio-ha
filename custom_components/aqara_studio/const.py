@@ -6,7 +6,7 @@ DOMAIN = "aqara_studio"
 CONF_HOST = "host"
 CONF_TOKEN = "token"
 CONF_PORT = "port"
-DEFAULT_PORT = 443
+DEFAULT_PORT = 80
 
 # --- WebSocket ---
 WS_SUBPROTOCOL = "aqara-studio-v1"
