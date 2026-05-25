@@ -1,0 +1,11 @@
+refresh_token:
+  name: 刷新 Access Token
+  description: 刷新 Aqara Studio 的 Access Token（有效期 7 天，需手动提供新 Token 并更新配置）。
+  fields:
+    token:
+      name: 新 Token
+      description: 新的 Access Token
+      required: true
+      example: "eyJhbGciO..."
+      selector:
+        text: {}

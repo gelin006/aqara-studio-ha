@@ -1,0 +1,11 @@
+{
+  "name": "Aqara Studio",
+  "content_in_root": false,
+  "render_readme": true,
+  "domains": ["aqara_studio"],
+  "country": ["CN"],
+  "homeassistant": "2025.1.0",
+  "iot_class": "Local Push",
+  "zip_release": true,
+  "filename": "aqara_studio.zip"
+}

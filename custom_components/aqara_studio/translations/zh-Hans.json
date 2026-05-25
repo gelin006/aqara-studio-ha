@@ -1,0 +1,21 @@
+{
+  "config": {
+    "step": {
+      "user": {
+        "title": "连接 Aqara Studio",
+        "description": "请填写 Aqara Studio 的连接信息。\n\nToken 可在 Aqara Studio → 开发者 → 数据转出 API 区域获取。\n参考文档: {docs_link}",
+        "data": {
+          "host": "主机地址（IP 或域名）",
+          "port": "端口（默认 443）",
+          "token": "Access Token"
+        }
+      }
+    },
+    "error": {
+      "cannot_connect": "无法连接，请检查主机地址、端口和 Token 是否正确。"
+    },
+    "success": {
+      "title": "连接成功"
+    }
+  }
+}
