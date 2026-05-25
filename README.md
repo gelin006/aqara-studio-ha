@@ -42,13 +42,13 @@
 
 1. 确保已安装 [HACS](https://hacs.xyz/)
 2. HACS → 集成 → 右上角菜单 → 自定义存储库
-3. 填入 `https://github.com/9072208332qq.com/aqara-studio-ha`，类别选择"集成"
+3. 填入 `https://github.com/gelin006/aqara-studio-ha`，类别选择"集成"
 4. 搜索并安装 "Aqara Studio"
 5. 重启 Home Assistant
 
 ### 手动安装
 
-1. 下载最新 [Release](https://github.com/9072208332qq.com/aqara-studio-ha/releases)
+1. 下载最新 [Release](https://github.com/gelin006/aqara-studio-ha/releases)
 2. 解压后将 `custom_components/aqara_studio` 文件夹复制到 HA 配置目录下的 `custom_components/`
 3. 重启 Home Assistant
 
@@ -119,7 +119,7 @@ Access Token 有效期为 **7 天**，到期后需要刷新：
 
 ```bash
 # 克隆
-git clone https://github.com/9072208332qq.com/aqara-studio-ha.git
+git clone https://github.com/gelin006/aqara-studio-ha.git
 
 # 推荐使用 devcontainer 或直接将 custom_components/ 链接到 HA
 ln -s $(pwd)/custom_components/aqara_studio /path/to/ha/config/custom_components/aqara_studio

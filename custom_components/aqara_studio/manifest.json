@@ -1,13 +1,13 @@
 {
   "domain": "aqara_studio",
   "name": "Aqara Studio",
-  "codeowners": ["9072208332qq.com"],
+  "codeowners": ["@gelin006"],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/9072208332qq.com/aqara-studio-ha",
+  "documentation": "https://github.com/gelin006/aqara-studio-ha",
   "integration_type": "hub",
   "iot_class": "local_push",
-  "issue_tracker": "https://github.com/9072208332qq.com/aqara-studio-ha/issues",
+  "issue_tracker": "https://github.com/gelin006/aqara-studio-ha/issues",
   "requirements": [],
   "version": "0.1.0",
   "loggers": ["aqara_studio"]
