@@ -2,170 +2,196 @@
   "aqara_studio": {
     "default": "mdi:home-assistant"
   },
-  "light": {
-    "default": "mdi:lightbulb",
-    "state": {
-      "on": "mdi:lightbulb-on",
-      "off": "mdi:lightbulb-off-outline"
+  "entity": {
+    "light": {
+      "default": "mdi:lightbulb",
+      "state": {
+        "on": "mdi:lightbulb-on",
+        "off": "mdi:lightbulb-off-outline"
+      }
+    },
+    "switch": {
+      "default": "mdi:power-socket",
+      "state": {
+        "on": "mdi:power-socket-us",
+        "off": "mdi:power-socket-off"
+      }
+    },
+    "sensor": {
+      "default": "mdi:sensor"
+    },
+    "binary_sensor": {
+      "default": "mdi:toggle-switch-variant",
+      "state": {
+        "on": "mdi:checkbox-marked-circle",
+        "off": "mdi:checkbox-blank-circle-outline"
+      }
+    },
+    "cover": {
+      "default": "mdi:curtains",
+      "state": {
+        "closed": "mdi:curtains-closed"
+      }
+    },
+    "lock": {
+      "default": "mdi:lock",
+      "state": {
+        "locked": "mdi:lock",
+        "unlocked": "mdi:lock-open-variant"
+      }
+    },
+    "climate": {
+      "default": "mdi:thermostat"
+    },
+    "fan": {
+      "default": "mdi:fan",
+      "state": {
+        "on": "mdi:fan",
+        "off": "mdi:fan-off"
+      }
+    },
+    "media_player": {
+      "default": "mdi:speaker"
     }
   },
-  "switch": {
-    "default": "mdi:power-socket",
-    "state": {
-      "on": "mdi:power-socket-us",
-      "off": "mdi:power-socket-off"
-    }
-  },
-  "sensor": {
-    "default": "mdi:sensor",
-    "state": {
-      "_": "mdi:sensor"
-    }
-  },
-  "binary_sensor": {
-    "default": "mdi:toggle-switch-variant",
-    "state": {
-      "on": "mdi:checkbox-marked-circle",
-      "off": "mdi:checkbox-blank-circle-outline"
-    }
-  },
-  "cover": {
-    "default": "mdi:curtains",
-    "state": {
-      "closed": "mdi:curtains-closed"
-    }
-  },
-  "lock": {
-    "default": "mdi:lock",
-    "state": {
-      "locked": "mdi:lock",
-      "unlocked": "mdi:lock-open-variant"
-    }
-  },
-  "climate": {
-    "default": "mdi:thermostat",
-    "state": {
-      "_": "mdi:hvac"
-    }
-  },
-  "fan": {
-    "default": "mdi:fan",
-    "state": {
-      "on": "mdi:fan",
-      "off": "mdi:fan-off"
-    }
-  },
-  "media_player": {
-    "default": "mdi:speaker",
-    "state": {
-      "_": "mdi:speaker-wireless"
-    }
-  },
-  "temperature": {
-    "default": "mdi:thermometer",
-    "state": {
-      "_": "mdi:thermometer"
-    }
-  },
-  "humidity": {
-    "default": "mdi:water-percent",
-    "state": {
-      "_": "mdi:water-percent"
-    }
-  },
-  "illuminance": {
-    "default": "mdi:brightness-5",
-    "state": {
-      "_": "mdi:brightness-5"
-    }
-  },
-  "pressure": {
-    "default": "mdi:gauge",
-    "state": {
-      "_": "mdi:gauge"
-    }
-  },
-  "co2": {
-    "default": "mdi:molecule-co2",
-    "state": {
-      "_": "mdi:molecule-co2"
-    }
-  },
-  "pm25": {
-    "default": "mdi:air-filter",
-    "state": {
-      "_": "mdi:air-filter"
-    }
-  },
-  "pm10": {
-    "default": "mdi:air-purifier",
-    "state": {
-      "_": "mdi:air-purifier"
-    }
-  },
-  "power": {
-    "default": "mdi:flash-outline",
-    "state": {
-      "_": "mdi:flash-outline"
-    }
-  },
-  "voltage": {
-    "default": "mdi:sine-wave",
-    "state": {
-      "_": "mdi:sine-wave"
-    }
-  },
-  "current": {
-    "default": "mdi:current-ac",
-    "state": {
-      "_": "mdi:current-ac"
-    }
-  },
-  "energy": {
-    "default": "mdi:lightning-bolt",
-    "state": {
-      "_": "mdi:lightning-bolt"
-    }
-  },
-  "battery": {
-    "default": "mdi:battery",
-    "state": {
-      "_": "mdi:battery"
-    }
-  },
-  "motion": {
-    "default": "mdi:motion-sensor",
-    "state": {
-      "on": "mdi:motion-sensor",
-      "off": "mdi:motion-sensor-off"
-    }
-  },
-  "door": {
-    "default": "mdi:door",
-    "state": {
-      "on": "mdi:door-open",
-      "off": "mdi:door-closed"
-    }
-  },
-  "moisture": {
-    "default": "mdi:water",
-    "state": {
-      "on": "mdi:water-alert",
-      "off": "mdi:water-check"
-    }
-  },
-  "smoke": {
-    "default": "mdi:smoke-detector",
-    "state": {
-      "on": "mdi:smoke-detector-alert",
-      "off": "mdi:smoke-detector-variant"
-    }
-  },
-  "occupancy": {
-    "default": "mdi:account-multiple",
-    "state": {
-      "on": "mdi:account-multiple",
-      "off": "mdi:account-multiple-outline"
+  "device": {
+    "Light": {
+      "default": "mdi:lightbulb-on-outline"
+    },
+    "Switch": {
+      "default": "mdi:power-socket-us"
+    },
+    "Outlet": {
+      "default": "mdi:power-plug-outline"
+    },
+    "DoorLock": {
+      "default": "mdi:lock-outline"
+    },
+    "Pusher": {
+      "default": "mdi:curtains"
+    },
+    "WindowCovering": {
+      "default": "mdi:blinds"
+    },
+    "AirConditioner": {
+      "default": "mdi:air-conditioner"
+    },
+    "Thermostat": {
+      "default": "mdi:thermostat"
+    },
+    "AirConditionerController": {
+      "default": "mdi:hvac"
+    },
+    "ThermostatController": {
+      "default": "mdi:thermostat-box"
+    },
+    "Fan": {
+      "default": "mdi:fan"
+    },
+    "Speaker": {
+      "default": "mdi:speaker-wireless"
+    },
+    "TemperatureSensor": {
+      "default": "mdi:thermometer"
+    },
+    "HumiditySensor": {
+      "default": "mdi:water-percent"
+    },
+    "IlluminanceSensor": {
+      "default": "mdi:brightness-5"
+    },
+    "PressureSensor": {
+      "default": "mdi:gauge"
+    },
+    "AtmosphericPressureSensor": {
+      "default": "mdi:gauge"
+    },
+    "CO2Sensor": {
+      "default": "mdi:molecule-co2"
+    },
+    "AirQualitySensor": {
+      "default": "mdi:air-filter"
+    },
+    "ElectricalSensor": {
+      "default": "mdi:flash-outline"
+    },
+    "MotionSensor": {
+      "default": "mdi:motion-sensor"
+    },
+    "OccupancySensor": {
+      "default": "mdi:account-multiple"
+    },
+    "ContactSensor": {
+      "default": "mdi:door-closed"
+    },
+    "WaterLeakSensor": {
+      "default": "mdi:water-alert"
+    },
+    "SmokeAlarm": {
+      "default": "mdi:smoke-detector"
+    },
+    "Button": {
+      "default": "mdi:gesture-tap-button"
+    },
+    "OnOffSensor": {
+      "default": "mdi:power"
+    },
+    "ClotheDryingMachine": {
+      "default": "mdi:tshirt-crew-outline"
+    },
+    "CurtainMotor": {
+      "default": "mdi:curtains"
+    },
+    "CurtainController": {
+      "default": "mdi:blinds"
+    },
+    "RollerBlind": {
+      "default": "mdi:roller-shade"
+    },
+    "DoorWindowSensor": {
+      "default": "mdi:door-closed-lock"
+    },
+    "VibrationSensor": {
+      "default": "mdi:vibrate"
+    },
+    "HumanBodySensor": {
+      "default": "mdi:motion-sensor"
+    },
+    "PresenceSensor": {
+      "default": "mdi:account-check"
+    },
+    "GasValveController": {
+      "default": "mdi:valve"
+    },
+    "PowerStrip": {
+      "default": "mdi:power-strip"
+    },
+    "SmartPlug": {
+      "default": "mdi:power-plug"
+    },
+    "SceneSwitch": {
+      "default": "mdi:light-switch"
+    },
+    "WirelessSwitch": {
+      "default": "mdi:remote"
+    },
+    "CurtainSwitch": {
+      "default": "mdi:blinds-horizontal"
+    },
+    "SingleSwitch": {
+      "default": "mdi:light-switch"
+    },
+    "DoubleSwitch": {
+      "default": "mdi:light-switch"
+    },
+    "TripleSwitch": {
+      "default": "mdi:light-switch"
+    },
+    "QuadrupleSwitch": {
+      "default": "mdi:light-switch"
+    },
+    "DimmerSwitch": {
+      "default": "mdi:light-switch"
     }
   }
 }
