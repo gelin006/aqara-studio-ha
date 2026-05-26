@@ -47,79 +47,91 @@ from .entity import AqaraStudioEntity
 _LOGGER = logging.getLogger(__name__)
 
 # Trait code → sensor descriptor mapping
-# Each entry: (trait_code, device_class, state_class, unit_of_measurement, friendly_name_prefix)
-SENSOR_MAP: dict[str, tuple[str, str, str, str]] = {
+# Each entry: (trait_code, device_class, state_class, unit_of_measurement, friendly_name_prefix, icon)
+SENSOR_MAP: dict[str, tuple[str, str, str, str, str]] = {
     TRAIT_TEMPERATURE: (
         SensorDeviceClass.TEMPERATURE,
         SensorStateClass.MEASUREMENT,
         UnitOfTemperature.CELSIUS,
         "温度",
+        "mdi:thermometer",
     ),
     TRAIT_HUMIDITY: (
         SensorDeviceClass.HUMIDITY,
         SensorStateClass.MEASUREMENT,
         PERCENTAGE,
         "湿度",
+        "mdi:water-percent",
     ),
     TRAIT_ILLUMINANCE: (
         SensorDeviceClass.ILLUMINANCE,
         SensorStateClass.MEASUREMENT,
         LIGHT_LUX,
         "光照度",
+        "mdi:brightness-5",
     ),
     TRAIT_PRESSURE: (
         SensorDeviceClass.PRESSURE,
         SensorStateClass.MEASUREMENT,
         UnitOfPressure.KPA,
         "气压",
+        "mdi:gauge",
     ),
     TRAIT_CO2: (
         SensorDeviceClass.CO2,
         SensorStateClass.MEASUREMENT,
         CONCENTRATION_PARTS_PER_MILLION,
         "CO₂",
+        "mdi:molecule-co2",
     ),
     TRAIT_PM25: (
         SensorDeviceClass.PM25,
         SensorStateClass.MEASUREMENT,
         CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         "PM2.5",
+        "mdi:air-filter",
     ),
     TRAIT_PM10: (
         SensorDeviceClass.PM10,
         SensorStateClass.MEASUREMENT,
         CONCENTRATION_MICROGRAMS_PER_CUBIC_METER,
         "PM10",
+        "mdi:air-purifier",
     ),
     TRAIT_CURRENT_POWER: (
         SensorDeviceClass.POWER,
         SensorStateClass.MEASUREMENT,
         UnitOfPower.WATT,
         "功率",
+        "mdi:flash-outline",
     ),
     TRAIT_CURRENT_VOLTAGE: (
         SensorDeviceClass.VOLTAGE,
         SensorStateClass.MEASUREMENT,
         UnitOfElectricPotential.VOLT,
         "电压",
+        "mdi:sine-wave",
     ),
     TRAIT_CURRENT: (
         SensorDeviceClass.CURRENT,
         SensorStateClass.MEASUREMENT,
         "A",
         "电流",
+        "mdi:current-ac",
     ),
     TRAIT_CUMULATIVE_ENERGY: (
         SensorDeviceClass.ENERGY,
         SensorStateClass.TOTAL_INCREASING,
         UnitOfEnergy.WATT_HOUR,
         "累计耗电",
+        "mdi:lightning-bolt",
     ),
     TRAIT_BAT_LEVEL: (
         SensorDeviceClass.BATTERY,
         SensorStateClass.MEASUREMENT,
         PERCENTAGE,
         "电量",
+        "mdi:battery",
     ),
 }
 
@@ -150,7 +162,7 @@ async def async_setup_entry(
                 for tr in func.get("traits", []):
                     tc = tr.get("traitCode", "")
                     if tc in SENSOR_MAP:
-                        device_cls, state_cls, unit, prefix = SENSOR_MAP[tc]
+                        device_cls, state_cls, unit, prefix, icon = SENSOR_MAP[tc]
                         unique_suffix = f"{epid}_{fc}_{tc}"
                         entities.append(
                             AqaraStudioSensor(
@@ -162,6 +174,7 @@ async def async_setup_entry(
                                 device_class=device_cls,
                                 state_class=state_cls,
                                 unit=unit,
+                                icon=icon,
                                 suffix=f"_{prefix}",
                             )
                         )
@@ -182,6 +195,7 @@ class AqaraStudioSensor(AqaraStudioEntity, SensorEntity):
         device_class: str,
         state_class: str,
         unit: str,
+        icon: str,
         suffix: str = "",
     ) -> None:
         """Initialize sensor."""
@@ -198,6 +212,7 @@ class AqaraStudioSensor(AqaraStudioEntity, SensorEntity):
         self._attr_device_class = device_class
         self._attr_state_class = state_class
         self._attr_native_unit_of_measurement = unit
+        self._attr_icon = icon
 
     @property
     def native_value(self):

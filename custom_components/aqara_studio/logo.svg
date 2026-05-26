@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" fill="none">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="240" fill="#3B82F6" opacity="0.12"/>
+  <!-- Smart home house -->
+  <path d="M160 280V380C160 391.046 168.954 400 180 400H332C343.046 400 352 391.046 352 380V280L256 200L160 280Z" fill="#3B82F6" opacity="0.3" stroke="#3B82F6" stroke-width="8" stroke-linejoin="round"/>
+  <path d="M120 260L256 140L392 260" stroke="#3B82F6" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M280 340H232C226.477 340 222 335.523 222 330V302C222 296.477 226.477 292 232 292H280C285.523 292 290 296.477 290 302V330C290 335.523 285.523 340 280 340Z" fill="#3B82F6" opacity="0.4"/>
+  <!-- Connection dots (IoT) -->
+  <circle cx="180" cy="220" r="8" fill="#3B82F6" opacity="0.7"/>
+  <circle cx="332" cy="220" r="8" fill="#3B82F6" opacity="0.7"/>
+  <!-- Wave lines representing IoT/Studio -->
+  <path d="M370 180C390 200 390 230 370 250" stroke="#3B82F6" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M400 160C430 190 430 240 400 270" stroke="#3B82F6" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.3"/>
+  <path d="M142 180C122 200 122 230 142 250" stroke="#3B82F6" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M112 160C82 190 82 240 112 270" stroke="#3B82F6" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.3"/>
+  <!-- Studio / gear icon -->
+  <circle cx="256" cy="370" r="20" fill="none" stroke="#3B82F6" stroke-width="4" opacity="0.6"/>
+  <circle cx="256" cy="370" r="8" fill="#3B82F6" opacity="0.4"/>
+</svg>

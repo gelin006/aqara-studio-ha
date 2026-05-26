@@ -42,10 +42,19 @@ async def async_setup_entry(
 class AqaraStudioFan(AqaraStudioEntity, FanEntity):
     """Representation of an Aqara Fan."""
 
+    _attr_icon = "mdi:fan"
+
     def __init__(self, coordinator: AqaraStudioCoordinator, entity_config: dict) -> None:
         super().__init__(coordinator, entity_config)
         self._attr_supported_features = FanEntityFeature.SET_SPEED
         self._attr_speed_count = int_states_in_range(SPEED_MIN, SPEED_MAX)
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on state."""
+        if self.is_on:
+            return "mdi:fan"
+        return "mdi:fan-off"
 
     @property
     def is_on(self) -> bool | None:
@@ -80,6 +89,10 @@ class AqaraStudioFan(AqaraStudioEntity, FanEntity):
         if commands:
             await self.coordinator.client.execute_trait(commands)
             for cmd in commands:
+                self.coordinator.record_pending_state(
+                    cmd["deviceId"], cmd["endpointId"],
+                    cmd["functionCode"], cmd["traitCode"], cmd["value"]
+                )
                 self._set_trait(cmd["endpointId"], cmd["functionCode"], cmd["traitCode"], cmd["value"])
             self.async_write_ha_state()
 

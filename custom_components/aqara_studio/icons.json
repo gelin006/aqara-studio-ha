@@ -1,0 +1,171 @@
+{
+  "aqara_studio": {
+    "default": "mdi:home-assistant"
+  },
+  "light": {
+    "default": "mdi:lightbulb",
+    "state": {
+      "on": "mdi:lightbulb-on",
+      "off": "mdi:lightbulb-off-outline"
+    }
+  },
+  "switch": {
+    "default": "mdi:power-socket",
+    "state": {
+      "on": "mdi:power-socket-us",
+      "off": "mdi:power-socket-off"
+    }
+  },
+  "sensor": {
+    "default": "mdi:sensor",
+    "state": {
+      "_": "mdi:sensor"
+    }
+  },
+  "binary_sensor": {
+    "default": "mdi:toggle-switch-variant",
+    "state": {
+      "on": "mdi:checkbox-marked-circle",
+      "off": "mdi:checkbox-blank-circle-outline"
+    }
+  },
+  "cover": {
+    "default": "mdi:curtains",
+    "state": {
+      "closed": "mdi:curtains-closed"
+    }
+  },
+  "lock": {
+    "default": "mdi:lock",
+    "state": {
+      "locked": "mdi:lock",
+      "unlocked": "mdi:lock-open-variant"
+    }
+  },
+  "climate": {
+    "default": "mdi:thermostat",
+    "state": {
+      "_": "mdi:hvac"
+    }
+  },
+  "fan": {
+    "default": "mdi:fan",
+    "state": {
+      "on": "mdi:fan",
+      "off": "mdi:fan-off"
+    }
+  },
+  "media_player": {
+    "default": "mdi:speaker",
+    "state": {
+      "_": "mdi:speaker-wireless"
+    }
+  },
+  "temperature": {
+    "default": "mdi:thermometer",
+    "state": {
+      "_": "mdi:thermometer"
+    }
+  },
+  "humidity": {
+    "default": "mdi:water-percent",
+    "state": {
+      "_": "mdi:water-percent"
+    }
+  },
+  "illuminance": {
+    "default": "mdi:brightness-5",
+    "state": {
+      "_": "mdi:brightness-5"
+    }
+  },
+  "pressure": {
+    "default": "mdi:gauge",
+    "state": {
+      "_": "mdi:gauge"
+    }
+  },
+  "co2": {
+    "default": "mdi:molecule-co2",
+    "state": {
+      "_": "mdi:molecule-co2"
+    }
+  },
+  "pm25": {
+    "default": "mdi:air-filter",
+    "state": {
+      "_": "mdi:air-filter"
+    }
+  },
+  "pm10": {
+    "default": "mdi:air-purifier",
+    "state": {
+      "_": "mdi:air-purifier"
+    }
+  },
+  "power": {
+    "default": "mdi:flash-outline",
+    "state": {
+      "_": "mdi:flash-outline"
+    }
+  },
+  "voltage": {
+    "default": "mdi:sine-wave",
+    "state": {
+      "_": "mdi:sine-wave"
+    }
+  },
+  "current": {
+    "default": "mdi:current-ac",
+    "state": {
+      "_": "mdi:current-ac"
+    }
+  },
+  "energy": {
+    "default": "mdi:lightning-bolt",
+    "state": {
+      "_": "mdi:lightning-bolt"
+    }
+  },
+  "battery": {
+    "default": "mdi:battery",
+    "state": {
+      "_": "mdi:battery"
+    }
+  },
+  "motion": {
+    "default": "mdi:motion-sensor",
+    "state": {
+      "on": "mdi:motion-sensor",
+      "off": "mdi:motion-sensor-off"
+    }
+  },
+  "door": {
+    "default": "mdi:door",
+    "state": {
+      "on": "mdi:door-open",
+      "off": "mdi:door-closed"
+    }
+  },
+  "moisture": {
+    "default": "mdi:water",
+    "state": {
+      "on": "mdi:water-alert",
+      "off": "mdi:water-check"
+    }
+  },
+  "smoke": {
+    "default": "mdi:smoke-detector",
+    "state": {
+      "on": "mdi:smoke-detector-alert",
+      "off": "mdi:smoke-detector-variant"
+    }
+  },
+  "occupancy": {
+    "default": "mdi:account-multiple",
+    "state": {
+      "on": "mdi:account-multiple",
+      "off": "mdi:account-multiple-outline"
+    }
+  }
+}

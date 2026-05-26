@@ -34,6 +34,15 @@ async def async_setup_entry(
 class AqaraStudioSwitch(AqaraStudioEntity, SwitchEntity):
     """Representation of an Aqara Switch or Outlet."""
 
+    _attr_icon = "mdi:power-socket"
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on state."""
+        if self.is_on:
+            return "mdi:power-socket-us"
+        return "mdi:power-socket-off"
+
     @property
     def is_on(self) -> bool | None:
         """Return true if switch is on."""

@@ -43,6 +43,15 @@ LOCK_STATE_MAP = {
 class AqaraStudioLock(AqaraStudioEntity, LockEntity):
     """Representation of an Aqara Door Lock."""
 
+    _attr_icon = "mdi:lock"
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on state."""
+        if self.is_locked:
+            return "mdi:lock"
+        return "mdi:lock-open-variant"
+
     @property
     def is_locked(self) -> bool | None:
         """Return true if the lock is locked."""

@@ -38,6 +38,8 @@ async def async_setup_entry(
 class AqaraStudioCover(AqaraStudioEntity, CoverEntity):
     """Representation of an Aqara curtain / blind."""
 
+    _attr_icon = "mdi:curtains"
+
     def __init__(self, coordinator: AqaraStudioCoordinator, entity_config: dict) -> None:
         super().__init__(coordinator, entity_config)
         self._attr_device_class = CoverDeviceClass.CURTAIN
@@ -47,6 +49,13 @@ class AqaraStudioCover(AqaraStudioEntity, CoverEntity):
             | CoverEntityFeature.STOP
             | CoverEntityFeature.SET_POSITION
         )
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on state."""
+        if self.is_closed:
+            return "mdi:curtains-closed"
+        return "mdi:curtains"
 
     @property
     def is_closed(self) -> bool | None:

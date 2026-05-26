@@ -44,6 +44,8 @@ PLAYBACK_STATE_MAP = {
 class AqaraStudioMediaPlayer(AqaraStudioEntity, MediaPlayerEntity):
     """Representation of an Aqara Speaker / Media Player."""
 
+    _attr_icon = "mdi:speaker-wireless"
+
     def __init__(self, coordinator: AqaraStudioCoordinator, entity_config: dict) -> None:
         super().__init__(coordinator, entity_config)
         self._attr_supported_features = (
@@ -52,6 +54,18 @@ class AqaraStudioMediaPlayer(AqaraStudioEntity, MediaPlayerEntity):
             | MediaPlayerEntityFeature.TURN_ON
             | MediaPlayerEntityFeature.TURN_OFF
         )
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on state."""
+        state = self.state
+        if state == MediaPlayerState.PLAYING:
+            return "mdi:speaker-play"
+        elif state == MediaPlayerState.PAUSED:
+            return "mdi:speaker-pause"
+        elif state == MediaPlayerState.OFF:
+            return "mdi:speaker-off"
+        return "mdi:speaker-wireless"
 
     @property
     def state(self) -> str | None:

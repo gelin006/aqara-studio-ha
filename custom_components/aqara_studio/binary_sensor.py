@@ -37,6 +37,34 @@ BINARY_MAP: dict[str, str] = {
     TRAIT_BOOLEAN_STATE: BinarySensorDeviceClass.SAFETY,
 }
 
+# device_class → icon mapping
+DEVICE_CLASS_ICONS: dict[str, str] = {
+    BinarySensorDeviceClass.MOTION: "mdi:motion-sensor",
+    BinarySensorDeviceClass.OCCUPANCY: "mdi:account-multiple",
+    BinarySensorDeviceClass.DOOR: "mdi:door",
+    BinarySensorDeviceClass.MOISTURE: "mdi:water",
+    BinarySensorDeviceClass.SMOKE: "mdi:smoke-detector",
+    BinarySensorDeviceClass.SAFETY: "mdi:shield-check",
+}
+
+BINARY_ICON_ON: dict[str, str] = {
+    BinarySensorDeviceClass.MOTION: "mdi:motion-sensor",
+    BinarySensorDeviceClass.OCCUPANCY: "mdi:account-multiple",
+    BinarySensorDeviceClass.DOOR: "mdi:door-open",
+    BinarySensorDeviceClass.MOISTURE: "mdi:water-alert",
+    BinarySensorDeviceClass.SMOKE: "mdi:smoke-detector-alert",
+    BinarySensorDeviceClass.SAFETY: "mdi:shield-alert",
+}
+
+BINARY_ICON_OFF: dict[str, str] = {
+    BinarySensorDeviceClass.MOTION: "mdi:motion-sensor-off",
+    BinarySensorDeviceClass.OCCUPANCY: "mdi:account-multiple-outline",
+    BinarySensorDeviceClass.DOOR: "mdi:door-closed",
+    BinarySensorDeviceClass.MOISTURE: "mdi:water-check",
+    BinarySensorDeviceClass.SMOKE: "mdi:smoke-detector-variant",
+    BinarySensorDeviceClass.SAFETY: "mdi:shield-check",
+}
+
 
 async def async_setup_entry(
     hass: HomeAssistant,
@@ -101,6 +129,14 @@ class AqaraStudioBinarySensor(AqaraStudioEntity, BinarySensorEntity):
         self._bs_endpoint_id = endpoint_id
         self._bs_function_code = function_code
         self._attr_device_class = device_class
+        self._attr_icon = DEVICE_CLASS_ICONS.get(device_class, "mdi:toggle-switch-variant")
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on state."""
+        if self.is_on:
+            return BINARY_ICON_ON.get(self._attr_device_class, self._attr_icon)
+        return BINARY_ICON_OFF.get(self._attr_device_class, self._attr_icon)
 
     @property
     def is_on(self) -> bool | None:

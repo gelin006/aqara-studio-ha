@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import logging
+import time
 from typing import Any
 
 from homeassistant.core import callback
@@ -23,7 +24,7 @@ class AqaraStudioEntity(CoordinatorEntity[AqaraStudioCoordinator]):
     - Coordinator access
     - Device info (via device_spec)
     - Trait cache read/write helpers
-    - Push event processing entry point
+    - Push event processing with stale-state debounce
     """
 
     def __init__(
@@ -87,16 +88,22 @@ class AqaraStudioEntity(CoordinatorEntity[AqaraStudioCoordinator]):
                         return self._get_trait(epid, fc, trait_code)
         return None
 
-    # ── Control Helper ───────────────────────────────────────────────
+    # ── Control Helper (with stale-state debounce) ───────────────────
 
     async def _execute_trait(self, trait_code: str, value: Any,
                              ep_id: int | None = None, func_code: str | None = None) -> None:
-        """Send a control command to Aqara Studio."""
+        """Send a control command to Aqara Studio.
+
+        Immediately updates local cache and records the pending command
+        so stale push events (pre-command state) are ignored.
+        """
         epid = ep_id if ep_id is not None else self._endpoint_id
         fcode = func_code if func_code is not None else self._function_code
         if epid is None or not fcode:
             _LOGGER.error("Missing endpoint/function for execute_trait on %s", self.entity_id)
             return
+
+        # Send command to device
         await self.coordinator.client.execute_trait([{
             "deviceId": self._device_id,
             "endpointId": epid,
@@ -104,7 +111,13 @@ class AqaraStudioEntity(CoordinatorEntity[AqaraStudioCoordinator]):
             "traitCode": trait_code,
             "value": value,
         }])
-        # Update local cache
+
+        # Record the pending state so stale-old-state pushes get ignored
+        self.coordinator.record_pending_state(
+            self._device_id, epid, fcode, trait_code, value
+        )
+
+        # Optimistic local update
         self._set_trait(epid, fcode, trait_code, value)
 
     # ── Availability from device online/offline ────────────────────────

@@ -6,7 +6,7 @@ Manages the device registry, trait cache, and periodic polling fallback.
 from __future__ import annotations
 
 import asyncio
-from datetime import timedelta
+from datetime import datetime, timedelta, timezone
 import logging
 from typing import Any
 
@@ -49,6 +49,12 @@ class AqaraStudioCoordinator(DataUpdateCoordinator[dict[str, Any]]):
 
         # device_id → set of (endpoint_id, function_code, trait_code)
         self.trait_index: dict[str, set[tuple]] = {}
+
+        # Pending command states for stale-push debounce
+        # Key: (device_id, endpoint_id, function_code, trait_code)
+        # Value: (timestamp, value)  — timestamp is monotonic time
+        self._pending_states: dict[tuple, tuple[float, Any]] = {}
+        self._pending_ttl = 1.5  # seconds: ignore push events matching a recent command
 
     async def async_init(self) -> None:
         """Fetch device specs, build entity configs, and subscribe to pushes."""
@@ -100,6 +106,56 @@ class AqaraStudioCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     ) -> None:
         self.trait_cache[(device_id, endpoint_id, function_code, trait_code)] = value
 
+    # ── Pending State (Stale Push Debounce) ────────────────────────
+
+    def record_pending_state(
+        self, device_id: str, endpoint_id: int,
+        function_code: str, trait_code: str, value: Any
+    ) -> None:
+        """Record that we just sent a command for this trait.
+
+        Subsequent push events with the OLD value will be ignored
+        until the real ack arrives or the TTL expires.
+        """
+        key = (device_id, endpoint_id, function_code, trait_code)
+        self._pending_states[key] = (time.monotonic(), value)
+
+    def _is_stale_push(
+        self, device_id: str, endpoint_id: int,
+        function_code: str, trait_code: str, value: Any
+    ) -> bool:
+        """Check if this push event reflects the state BEFORE our command."""
+        key = (device_id, endpoint_id, function_code, trait_code)
+        pending = self._pending_states.get(key)
+        if pending is None:
+            return False
+        timestamp, commanded_value = pending
+        # If this push still shows the OLD value (different from commanded),
+        # it's a stale push — ignore it.
+        if value != commanded_value:
+            return True
+        # If it matches our commanded value, it's the real ack — clear pending
+        self._clear_pending_state(device_id, endpoint_id, function_code, trait_code)
+        return False
+
+    def _clear_pending_state(
+        self, device_id: str, endpoint_id: int,
+        function_code: str, trait_code: str
+    ) -> None:
+        """Remove pending state entry."""
+        key = (device_id, endpoint_id, function_code, trait_code)
+        self._pending_states.pop(key, None)
+
+    def _expire_pending_states(self) -> None:
+        """Remove pending states older than TTL."""
+        now = time.monotonic()
+        expired = [
+            k for k, (ts, _) in self._pending_states.items()
+            if now - ts > self._pending_ttl
+        ]
+        for k in expired:
+            self._pending_states.pop(k, None)
+
     # ── Push Event Handlers ──────────────────────────────────────────
 
     async def handle_trait_update(self, msg: dict) -> None:
@@ -114,7 +170,19 @@ class AqaraStudioCoordinator(DataUpdateCoordinator[dict[str, Any]]):
         if not all([device_id, endpoint_id is not None, function_code, trait_code]):
             return
 
+        # Skip stale push events — if we just commanded this exact trait
+        # and the push still shows the OLD state, ignore it.
+        if self._is_stale_push(device_id, endpoint_id, function_code, trait_code, value):
+            _LOGGER.debug(
+                "Ignoring stale push for %s/%s/%s value=%s (waiting for real ack)",
+                device_id, endpoint_id, trait_code, value
+            )
+            return
+
         self.update_trait_cache(device_id, endpoint_id, function_code, trait_code, value)
+
+        # Clear any pending state for this trait — real update arrived
+        self._clear_pending_state(device_id, endpoint_id, function_code, trait_code)
 
         # Notify via queue (consumed by platforms)
         await self._update_queue.put({
@@ -232,6 +300,9 @@ class AqaraStudioCoordinator(DataUpdateCoordinator[dict[str, Any]]):
                 val = r.get("value")
                 if did and tc is not None:
                     self.update_trait_cache(did, epid, fc, tc, val)
+
+            # Auto-expire pending states older than TTL
+            self._expire_pending_states()
 
             return {"poll": "ok", "results": len(results)}
 

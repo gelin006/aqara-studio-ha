@@ -40,6 +40,8 @@ async def async_setup_entry(
 class AqaraStudioLight(AqaraStudioEntity, LightEntity):
     """Representation of an Aqara Light."""
 
+    _attr_icon = "mdi:lightbulb"
+
     def __init__(self, coordinator: AqaraStudioCoordinator, entity_config: dict) -> None:
         """Initialize light."""
         super().__init__(coordinator, entity_config)
@@ -116,6 +118,13 @@ class AqaraStudioLight(AqaraStudioEntity, LightEntity):
         if hue is not None and sat is not None:
             return (float(hue), float(sat))
         return None
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on state."""
+        if self.is_on:
+            return "mdi:lightbulb-on"
+        return "mdi:lightbulb-off-outline"
 
     async def async_turn_on(self, **kwargs: Any) -> None:
         """Turn the light on.
@@ -209,9 +218,14 @@ class AqaraStudioLight(AqaraStudioEntity, LightEntity):
 
         if commands:
             await self.coordinator.client.execute_trait(commands)
-            # Update local cache
+            # Record pending states for all commanded traits
             for cmd in commands:
-                self._set_trait(cmd["endpointId"], cmd["functionCode"], cmd["traitCode"], cmd["value"])
+                self.coordinator.record_pending_state(
+                    cmd["deviceId"], cmd["endpointId"],
+                    cmd["functionCode"], cmd["traitCode"], cmd["value"]
+                )
+                self._set_trait(cmd["endpointId"], cmd["functionCode"],
+                                cmd["traitCode"], cmd["value"])
             self.async_write_ha_state()
 
     async def async_turn_off(self, **kwargs: Any) -> None:
@@ -226,4 +240,5 @@ class AqaraStudioLight(AqaraStudioEntity, LightEntity):
                 for tr in func.get("traits", []):
                     if tr.get("traitCode") == TRAIT_ON_OFF and tr.get("parameter", {}).get("writable"):
                         await self._execute_trait(TRAIT_ON_OFF, False, epid, fc)
+                        self.async_write_ha_state()
                         return

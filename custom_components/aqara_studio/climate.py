@@ -59,6 +59,8 @@ async def async_setup_entry(
 class AqaraStudioClimate(AqaraStudioEntity, ClimateEntity):
     """Representation of an Aqara Air Conditioner / Thermostat."""
 
+    _attr_icon = "mdi:thermostat"
+
     def __init__(self, coordinator: AqaraStudioCoordinator, entity_config: dict) -> None:
         super().__init__(coordinator, entity_config)
         self._attr_temperature_unit = UnitOfTemperature.CELSIUS
@@ -91,6 +93,18 @@ class AqaraStudioClimate(AqaraStudioEntity, ClimateEntity):
                         supported = tr.get("parameter", {}).get("supportedValues", [])
                         fan_modes = [s.get("key", "") for s in supported]
         self._attr_fan_modes = fan_modes or None
+
+    @property
+    def icon(self) -> str | None:
+        """Return dynamic icon based on HVAC mode."""
+        mode = self.hvac_mode
+        if mode == HVACMode.COOL:
+            return "mdi:snowflake"
+        elif mode == HVACMode.HEAT:
+            return "mdi:fire"
+        elif mode == HVACMode.OFF:
+            return "mdi:thermostat-off"
+        return "mdi:hvac"
 
     @property
     def hvac_mode(self) -> str | None:
@@ -166,6 +180,10 @@ class AqaraStudioClimate(AqaraStudioEntity, ClimateEntity):
             if commands:
                 await self.coordinator.client.execute_trait(commands)
                 for cmd in commands:
+                    self.coordinator.record_pending_state(
+                        cmd["deviceId"], cmd["endpointId"],
+                        cmd["functionCode"], cmd["traitCode"], cmd["value"]
+                    )
                     self._set_trait(cmd["endpointId"], cmd["functionCode"], cmd["traitCode"], cmd["value"])
                 self.async_write_ha_state()
 
