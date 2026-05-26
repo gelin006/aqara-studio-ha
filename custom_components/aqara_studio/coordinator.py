@@ -8,6 +8,7 @@ from __future__ import annotations
 import asyncio
 from datetime import datetime, timedelta, timezone
 import logging
+import time
 from typing import Any
 
 from homeassistant.core import HomeAssistant
