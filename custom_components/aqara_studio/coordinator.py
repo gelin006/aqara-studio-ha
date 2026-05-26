@@ -159,8 +159,24 @@ class AqaraStudioCoordinator(DataUpdateCoordinator[dict[str, Any]]):
     # ── Push Event Handlers ──────────────────────────────────────────
 
     async def handle_trait_update(self, msg: dict) -> None:
-        """Handle TraitValueUpdate push."""
-        data = msg.get("data", {})
+        """Handle TraitValueUpdate push.
+
+        msg.data can be either a single dict or a list of dicts.
+        """
+        raw_data = msg.get("data", {})
+
+        # Normalize: if data is a list, process each item
+        if isinstance(raw_data, list):
+            for item in raw_data:
+                await self._process_single_trait_update(item)
+            return
+
+        await self._process_single_trait_update(raw_data)
+
+    async def _process_single_trait_update(self, data: dict) -> None:
+        """Process a single trait update event."""
+        if not isinstance(data, dict):
+            return
         device_id = data.get("deviceId")
         endpoint_id = data.get("endpointId")
         function_code = data.get("functionCode")
