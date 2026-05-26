@@ -5,13 +5,7 @@ from __future__ import annotations
 import logging
 from typing import Any
 
-from homeassistant.components.light import (
-    ATTR_BRIGHTNESS,
-    ATTR_COLOR_TEMP,
-    ATTR_HS_COLOR,
-    ColorMode,
-    LightEntity,
-)
+from homeassistant.components.light import LightEntity
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
@@ -21,6 +15,15 @@ from .coordinator import AqaraStudioCoordinator
 from .entity import AqaraStudioEntity
 
 _LOGGER = logging.getLogger(__name__)
+
+# Use string constants for HA compatibility across versions
+ATTR_BRIGHTNESS = "brightness"
+ATTR_COLOR_TEMP = "color_temp"
+ATTR_HS_COLOR = "hs_color"
+COLOR_MODE_ONOFF = "onoff"
+COLOR_MODE_BRIGHTNESS = "brightness"
+COLOR_MODE_COLOR_TEMP = "color_temp"
+COLOR_MODE_HS = "hs"
 
 
 async def async_setup_entry(
@@ -47,8 +50,8 @@ class AqaraStudioLight(AqaraStudioEntity, LightEntity):
         super().__init__(coordinator, entity_config)
 
         # Detect color modes from spec
-        self._attr_color_mode = ColorMode.ONOFF
-        self._attr_supported_color_modes: set[ColorMode] = set()
+        self._attr_color_mode = COLOR_MODE_ONOFF
+        self._attr_supported_color_modes: set[str] = set()
         spec = self._device_spec
 
         has_brightness = False
@@ -67,23 +70,23 @@ class AqaraStudioLight(AqaraStudioEntity, LightEntity):
                         has_hs = True
 
         if has_hs:
-            self._attr_supported_color_modes.add(ColorMode.HS)
+            self._attr_supported_color_modes.add(COLOR_MODE_HS)
         if has_color_temp:
-            self._attr_supported_color_modes.add(ColorMode.COLOR_TEMP)
+            self._attr_supported_color_modes.add(COLOR_MODE_COLOR_TEMP)
         if has_brightness and not (has_hs or has_color_temp):
-            self._attr_supported_color_modes.add(ColorMode.BRIGHTNESS)
+            self._attr_supported_color_modes.add(COLOR_MODE_BRIGHTNESS)
         if not self._attr_supported_color_modes:
-            self._attr_supported_color_modes.add(ColorMode.ONOFF)
+            self._attr_supported_color_modes.add(COLOR_MODE_ONOFF)
 
         # Pick the current color mode
         if has_hs:
-            self._attr_color_mode = ColorMode.HS
+            self._attr_color_mode = COLOR_MODE_HS
         elif has_color_temp:
-            self._attr_color_mode = ColorMode.COLOR_TEMP
+            self._attr_color_mode = COLOR_MODE_COLOR_TEMP
         elif has_brightness:
-            self._attr_color_mode = ColorMode.BRIGHTNESS
+            self._attr_color_mode = COLOR_MODE_BRIGHTNESS
         else:
-            self._attr_color_mode = ColorMode.ONOFF
+            self._attr_color_mode = COLOR_MODE_ONOFF
 
     @property
     def is_on(self) -> bool | None:
